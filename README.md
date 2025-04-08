@@ -1,6 +1,6 @@
 # homebrew-dify
 
-Homebrew tag for Dify
+Homebrew tap for [Dify](https://github.com/langgenius/dify-plugin-daemon)
 ## Installation
 
 ```bash

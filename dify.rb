@@ -10,10 +10,6 @@ class Dify < Formula
         strategy :github_latest
     end
 
-    bottle do
-        sha256 cellar: :any_skip_relocation, all: "d7109828c5d0e162387a744b33cefbb908f943e5c30e1d95ddd900733ed319d9"
-    end
-
     depends_on "go" => :build
 
     def install

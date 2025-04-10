@@ -1,23 +1,51 @@
 class Dify < Formula
-    desc "Dify"
-    homepage "https://github.com/langgenius/dify-plugin-daemon"
-    license "MIT"
-    url "https://github.com/langgenius/dify-plugin-daemon/archive/refs/tags/0.0.9.tar.gz"
-    sha256 "2e3e28bad84517406333180e101468c0640186ec59a0682d86f71af68a10eee3"
+  desc "Dify is a cli tool to help you develop your Dify projects."
+  homepage "https://github.com/langgenius/dify-plugin-daemon"
+  license "MIT"
+  version "0.0.9"
 
-    livecheck do
-        url :stable
-        strategy :github_latest
+  def self.os_name
+    OS.mac? ? "darwin" : "linux"
+  end
+
+  def self.arch_name
+    Hardware::CPU.arm? ? "arm64" : "amd64"
+  end
+
+  def self.cli_bin_name
+    "dify-plugin-#{os_name}-#{arch_name}"
+  end
+
+  SHA256_FILE = "cli_checksums.txt"
+  def self.sha256_map
+    @sha256_map ||= begin
+                      map = {}
+                      File.readlines(SHA256_FILE).each do |line|
+                        name, sha = line.strip.split
+                        map[name] = sha
+                      end
+                      map
+                    rescue Errno::ENOENT
+                      raise "Failed to read the SHA256 checksum list file #{SHA256_FILE}"
+                    end
+  end
+
+  def self.dynamic_sha256
+    sha256_map.fetch(cli_bin_name) do |key|
+      raise "Failed to look up SHA256 checksum for #{key}"
     end
+  end
 
-    depends_on "go" => :build
+  # Define the URL and the SHA256 checksum for binary file
+  url "#{homepage}/releases/download/#{version}/#{cli_bin_name}"
+  sha256 dynamic_sha256
 
-    def install
-       ldflags = "-X 'main.VersionX=v#{version}'"
-       system "go", "build", *std_go_args(ldflags: ldflags), "-o", bin/"dify", "./cmd/commandline"
-    end
+  def install
+    # move the binary file to bin directory
+    bin.install "#{self.class.cli_bin_name}" => "dify"
+  end
 
-    test do
-        assert_match version.to_s, shell_output("#{bin}/dify version")
-    end
+  test do
+    assert_equal "v#{version}", shell_output("#{bin}/dify version").strip
+  end
 end

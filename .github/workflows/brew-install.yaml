@@ -1,0 +1,31 @@
+name: Homebrew Install
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: homebrew-install-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Homebrew Install
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Install Dify CLI
+        run: brew install ./dify.rb
+
+      - name: Test Dify CLI
+        run: brew test dify

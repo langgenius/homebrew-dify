@@ -16,8 +16,10 @@ class Dify < Formula
     "dify-plugin-#{self.os_name}-#{self.arch_name}"
   end
 
-  url "https://github.com/langgenius/dify-plugin-daemon/releases/download/#{version}/#{cli_bin_name}"
+  # url link to cli binary file
+  url "#{homepage}/releases/download/#{version}/#{cli_bin_name}"
 
+  # sha256 for cli binary file
   on_macos do
     on_arm do
       sha256 "14ac423598bacce44281b5ab5ef59da11d66c39d54e8575da3a7514fe52abd25"
@@ -37,6 +39,7 @@ class Dify < Formula
   end
 
   def install
+    # move the binary file to bin directory
     bin.install "#{self.class.cli_bin_name}" => "dify"
   end
 

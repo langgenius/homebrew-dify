@@ -1,6 +1,7 @@
 class Dify < Formula
   desc "Dify"
   homepage "https://github.com/langgenius/dify-plugin-daemon"
+  license "MIT"
   version "0.0.7"
 
   # determine the download url by the OS and architecture
@@ -23,7 +24,7 @@ class Dify < Formula
     end
     on_intel do
       sha256 "a5fb9dab4d0ab3a55ef786140b41262275650e789d50186783d765620550e4e7"
-      end
+    end
   end
 
   def install

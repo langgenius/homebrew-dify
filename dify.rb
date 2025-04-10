@@ -4,10 +4,19 @@ class Dify < Formula
   license "MIT"
   version "0.0.7"
 
-  # determine the download url by the OS and architecture
-  os_name = OS.mac? ? "darwin" : "linux"
-  arch_name = Hardware::CPU.arm? ? "arm64" : "amd64"
-  url "https://github.com/langgenius/dify-plugin-daemon/releases/download/#{version}/dify-plugin-#{os_name}-#{arch_name}"
+  def self.os_name
+    OS.mac? ? "darwin" : "linux"
+  end
+
+  def self.arch_name
+    Hardware::CPU.arm? ? "arm64" : "amd64"
+  end
+
+  def self.cli_bin_name
+    "dify-plugin-#{self.os_name}-#{self.arch_name}"
+  end
+
+  url "https://github.com/langgenius/dify-plugin-daemon/releases/download/#{version}/#{cli_bin_name}"
 
   on_macos do
     on_arm do
@@ -28,11 +37,7 @@ class Dify < Formula
   end
 
   def install
-    os_name = OS.mac? ? "darwin" : "linux"
-    arch_name = Hardware::CPU.arm? ? "arm64" : "amd64"
-    cli_bin_name = "dify-plugin-#{os_name}-#{arch_name}"
-
-    bin.install cli_bin_name => "dify"
+    bin.install "#{self.class.cli_bin_name}" => "dify"
   end
 
   test do

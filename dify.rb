@@ -5,6 +5,8 @@ class Dify < Formula
 
   base_download_url = "https://github.com/langgenius/dify-plugin-daemon/releases/download/#{version}"
 
+  abc = "dify-plugin-darwin-arm64"
+
   if OS.mac?
     if Hardware::CPU.arm?
       url "#{base_download_url}/dify-plugin-darwin-arm64"
@@ -26,7 +28,16 @@ class Dify < Formula
   def install
     if OS.mac?
       if Hardware::CPU.arm?
+        url "#{base_download_url}/dify-plugin-darwin-arm64"
         bin.install "dify-plugin-darwin-arm64" => "dify"
+      elsif Hardware::CPU.intel?
+        bin.install "dify-plugin-darwin-amd64" => "dify"
+      end
+    elsif OS.linux?
+      if Hardware::CPU.arm?
+        bin.install "dify-plugin-linux-arm64" => "dify"
+      elsif Hardware::CPU.intel?
+        bin.install "dify-plugin-linux-amd64" => "dify"
       end
     end
   end

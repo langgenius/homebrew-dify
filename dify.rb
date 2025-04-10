@@ -36,6 +36,6 @@ class Dify < Formula
   end
 
   test do
-    system "#{bin}/dify", "--version"
+    system "#{bin}/dify", "version"
   end
 end

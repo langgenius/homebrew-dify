@@ -4,18 +4,8 @@ class Dify < Formula
   version "0.0.7"
 
   # determine the download url by the OS and architecture
-  if OS.mac?
-    os_name = "darwin"
-  elsif OS.linux?
-    os_name = "linux"
-  end
-
-  if Hardware::CPU.arm?
-    arch_name = "arm64"
-  elsif Hardware::CPU.intel?
-    arch_name = "amd64"
-  end
-
+  os_name = OS.mac? ? "darwin" : "linux"
+  arch_name = Hardware::CPU.arm? ? "arm64" : "amd64"
   url "https://github.com/langgenius/dify-plugin-daemon/releases/download/#{version}/dify-plugin-#{os_name}-#{arch_name}"
 
   # determine the sha256 by the OS and architecture
@@ -34,19 +24,9 @@ class Dify < Formula
   end
 
   def install
-    if OS.mac?
-      if Hardware::CPU.arm?
-        bin_name = "dify-plugin-darwin-arm64"
-      elsif Hardware::CPU.intel?
-        bin_name = "dify-plugin-darwin-amd64"
-      end
-    elsif OS.linux?
-      if Hardware::CPU.arm?
-        bin_name = "dify-plugin-linux-arm64"
-      elsif Hardware::CPU.intel?
-        bin_name = "dify-plugin-linux-amd64"
-      end
-    end
+    os_name = OS.mac? ? "darwin" : "linux"
+    arch_name = Hardware::CPU.arm? ? "arm64" : "amd64"
+    bin_name = "dify-plugin-#{os_name}-#{arch_name}"
 
     bin.install bin_name => "dify"
   end

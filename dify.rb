@@ -1,23 +1,37 @@
 class Dify < Formula
-    desc "Dify"
-    homepage "https://github.com/langgenius/dify-plugin-daemon"
-    license "MIT"
-    url "https://github.com/langgenius/dify-plugin-daemon/archive/refs/tags/0.0.7.tar.gz"
-    sha256 "a277d49127962c6d15fcfb47ad1ea8bc3e2d5bd7045b5c171b36b9cac2d9d2d7"
+  desc "Dify"
+  homepage "https://github.com/langgenius/dify-plugin-daemon"
+  version "0.0.7"
 
-    livecheck do
-        url :stable
-        strategy :github_latest
+  base_download_url = "https://github.com/langgenius/dify-plugin-daemon/releases/download/#{version}"
+
+  if OS.mac?
+    if Hardware::CPU.arm?
+      url "#{base_download_url}/dify-plugin-darwin-arm64"
+      sha256 "14ac423598bacce44281b5ab5ef59da11d66c39d54e8575da3a7514fe52abd25"
+    elsif Hardware::CPU.intel?
+      url "#{base_download_url}/dify-plugin-darwin-amd64"
+      sha256 "e2f990be376162bcb4270fd0a35de84f0d0593403e58ecf07335a5c7487313e1"
     end
-
-    depends_on "go" => :build
-
-    def install
-       ldflags = "-X 'main.VersionX=v#{version}'"
-       system "go", "build", *std_go_args(ldflags: ldflags), "-o", bin/"dify", "./cmd/commandline"
+  elsif OS.linux?
+    if Hardware::CPU.arm?
+      url "#{base_download_url}/dify-plugin-linux-arm64"
+      sha256 "db09d683ceedc754328f8825e2af2a226c7791b2dc2834feb176c2b0c5cbd42a"
+    elsif Hardware::CPU.intel?
+      url "#{base_download_url}/dify-plugin-linux-amd64"
+      sha256 "a5fb9dab4d0ab3a55ef786140b41262275650e789d50186783d765620550e4e7"
     end
+  end
 
-    test do
-        assert_match version.to_s, shell_output("#{bin}/dify version")
+  def install
+    if OS.mac?
+      if Hardware::CPU.arm?
+        bin.install "dify-plugin-darwin-arm64" => "dify"
+      end
     end
+  end
+
+  test do
+    system "#{bin}/dify", "--version"
+  end
 end

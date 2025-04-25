@@ -4,6 +4,11 @@ class Dify < Formula
   license "MIT"
   version "0.0.9"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   def self.os_name
     OS.mac? ? "darwin" : "linux"
   end

@@ -2,8 +2,8 @@ class Dify < Formula
     desc "Dify"
     homepage "https://github.com/langgenius/dify-plugin-daemon"
     license "MIT"
-    url "https://github.com/langgenius/dify-plugin-daemon/archive/refs/tags/0.0.7.tar.gz"
-    sha256 "a277d49127962c6d15fcfb47ad1ea8bc3e2d5bd7045b5c171b36b9cac2d9d2d7"
+    url "https://github.com/langgenius/dify-plugin-daemon/archive/refs/tags/0.0.9.tar.gz"
+    sha256 "2e3e28bad84517406333180e101468c0640186ec59a0682d86f71af68a10eee3"
 
     livecheck do
         url :stable

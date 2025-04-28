@@ -1,0 +1,40 @@
+name: Homebrew Install
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: homebrew-install-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Homebrew Install
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      matrix:
+        runner-image:
+          - ubuntu-latest
+          - macos-15
+    runs-on: ${{ matrix.runner-image }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Homebrew Install Dify
+        run: |
+          tmp_dir=$(mktemp -d)
+          cd $tmp_dir
+          brew install ./dify.rb
+
+      - name: Homebrew Test Dify
+        run: brew test dify

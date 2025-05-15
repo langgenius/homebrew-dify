@@ -33,6 +33,7 @@ jobs:
       - name: Homebrew Install Dify
         run: |
           tmp_dir=$(mktemp -d)
+          cp ./dify.rb $tmp_dir
           cd $tmp_dir
           brew install ./dify.rb
 

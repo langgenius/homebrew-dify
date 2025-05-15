@@ -2,7 +2,7 @@ class Dify < Formula
   desc "Dify is a cli tool to help you develop your Dify projects."
   homepage "https://github.com/langgenius/dify-plugin-daemon"
   license "MIT"
-  version "0.0.9"
+  version "0.0.10"
 
   livecheck do
     url :stable
@@ -14,10 +14,10 @@ class Dify < Formula
   CLI_BIN_NAME = "dify-plugin-#{os_name}-#{arch_name}"
 
   CHECKSUM_MAP = {
-    "dify-plugin-darwin-arm64" => "1d205836baa170a88c8d531b6ca7a4cd42d6d7620170064de651162e1f96c95f",
-    "dify-plugin-darwin-amd64" => "78e5ee5936ecba26ea647b6f8fcbc73de4fc636372f4a2bcb49052935875576a",
-    "dify-plugin-linux-arm64" => "0bd6bb810b1d6e0cfec9e198f0bfdd6364253c22a400969e3bdc99e8112e2bca",
-    "dify-plugin-linux-amd64" => "4a0e16d030413da7c15bbc88b59bbbc9f5b0aa153b8d67e18de931dbb3a6ffd3",
+    "dify-plugin-darwin-arm64" => "005986e9067a8044cce32038ca671911603189361229e85d3f7b58cf6bc9d9ee",
+    "dify-plugin-darwin-amd64" => "78cdeadf2ad4c89f0ac81293355017df9b97e7b360076802703655059b6d5125",
+    "dify-plugin-linux-arm64" => "45de2f6c23dfdacefdc90822e0719942cd5ba89daf96ce467b32bb9670c6371c",
+    "dify-plugin-linux-amd64" => "cf1cc8f43483eccfab992086ec295c15d3f4acf6249c9882438782d6a5349db6",
   }
 
   def self.get_sha256(cli_name)

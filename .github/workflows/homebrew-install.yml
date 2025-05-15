@@ -31,11 +31,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Homebrew Install Dify
-        run: |
-          tmp_dir=$(mktemp -d)
-          cp ./dify.rb $tmp_dir
-          cd $tmp_dir
-          brew install ./dify.rb
+        run: brew install ./dify.rb
 
       - name: Homebrew Test Dify
         run: brew test dify

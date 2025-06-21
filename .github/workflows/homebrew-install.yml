@@ -21,7 +21,7 @@ jobs:
           - ubuntu-latest # linux-amd64
           - ubuntu-24.04-arm # linux-arm64
           - macos-latest # darwin-arm64
-          - macos-13 # linux-amd64
+          - macos-13 # darwin-amd64
     runs-on: ${{ matrix.runner-image }}
 
     steps:

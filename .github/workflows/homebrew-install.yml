@@ -18,17 +18,25 @@ jobs:
     strategy:
       matrix:
         runner-image:
-          - ubuntu-latest
-          - macos-15
+          - ubuntu-latest # linux-amd64
+          - ubuntu-24.04-arm # linux-arm64
+          - macos-latest # darwin-arm64
+          - macos-13 # darwin-amd64
     runs-on: ${{ matrix.runner-image }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install Homebrew
+        shell: bash
+        if: ${{ matrix.runner-image == 'ubuntu-24.04-arm'}}
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
       - name: Set up Homebrew
         id: set-up-homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@main
 
       - name: Homebrew Install Dify
         run: brew install ./dify.rb

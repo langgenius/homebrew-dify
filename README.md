@@ -1,6 +1,11 @@
 # homebrew-dify
 
-Homebrew tap for [Dify](https://github.com/langgenius/dify-plugin-daemon)
+Homebrew tap for the CLI tool of [Dify](https://github.com/langgenius/dify-plugin-daemon?tab=readme-ov-file#cli)
+
+## Prerequisite
+
+- Install [Homebrew](https://brew.sh/)
+
 ## Installation
 
 ```bash

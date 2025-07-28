@@ -1,6 +1,7 @@
 name: Homebrew Install
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main

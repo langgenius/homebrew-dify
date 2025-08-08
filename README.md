@@ -12,3 +12,18 @@ Homebrew tap for the CLI tool of [Dify](https://github.com/langgenius/dify-plugi
 brew tap langgenius/dify
 brew install dify
 ```
+
+## Upgrade
+
+```bash
+brew upgrade dify
+```
+
+or forcing a reinstallation:
+
+```bash
+brew uninstall dify
+brew untap langgenius/dify
+brew tap langgenius/dify
+brew install dify
+```

@@ -14,10 +14,10 @@ class Dify < Formula
   CLI_BIN_NAME = "dify-plugin-#{os_name}-#{arch_name}"
 
   CHECKSUM_MAP = {
-    "dify-plugin-darwin-arm64" => "e8d22c8860ad837fa3a4641c19abe448b81c134476c2b56b2db4dae691356cd0",
-    "dify-plugin-darwin-amd64" => "6a792bb8c683c6ae4c28cdf52ee7ecb8afd2124578f59f9b1bd94d01ca4a0b46",
-    "dify-plugin-linux-arm64" => "51686b4e5de785d43d787bc8939f7cfaac5fe1f76aa94b279c5b6a6e6d829ef7",
-    "dify-plugin-linux-amd64" => "bdf678de192fc3462e5f3cfd4d8ec8bfe9364a7b444c2120f1764d7c85332264",
+    "dify-plugin-darwin-amd64" => "57c8d2a65580bf3e7dd7bdf04b5e54b11eb9aa19f06df61beeba70f75f2d6d0a",
+    "dify-plugin-darwin-arm64" => "a3df2c1606eb631edb1c931ca8b944d337f370d2042607853156a585b68d2e4e",
+    "dify-plugin-linux-amd64" => "69b0f0d00c34ffccf8031ddb18f872a54e31035938f727379130c6423727507f",
+    "dify-plugin-linux-arm64" => "19e0c2c4eb982520eed4cf8394a9787bf23087419d40048e8c0566fdbf65e67c",
   }
 
   def self.get_sha256(cli_name)

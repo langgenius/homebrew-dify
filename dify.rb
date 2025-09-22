@@ -2,7 +2,7 @@ class Dify < Formula
   desc "Dify is a cli tool to help you develop your Dify projects."
   homepage "https://github.com/langgenius/dify-plugin-daemon"
   license "MIT"
-  version "0.2.0"
+  version "0.3.0"
 
   livecheck do
     url :stable

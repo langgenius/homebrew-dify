@@ -40,7 +40,9 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@main
 
       - name: Homebrew Install Dify
-        run: brew install ./dify.rb
+        run: |
+          brew tap langgenius/dify ./
+          brew install dify
 
       - name: Homebrew Test Dify
         run: brew test dify

@@ -41,6 +41,7 @@ jobs:
 
       - name: Homebrew Install Dify
         run: |
+          brew untap langgenius/dify || true
           brew tap langgenius/dify ./
           brew install dify
 

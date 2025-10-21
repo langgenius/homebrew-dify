@@ -47,3 +47,9 @@ jobs:
 
       - name: Homebrew Test Dify
         run: brew test dify
+        
+      - name: Cleanup
+        if: always()
+        run: |
+          brew untap langgenius/dify || true
+          rm -rf "$(brew --prefix)/Library/Taps/langgenius/homebrew-dify" || true

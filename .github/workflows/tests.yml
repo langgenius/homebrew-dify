@@ -46,12 +46,3 @@ jobs:
 
       - run: brew test-bot --only-formulae
         if: github.event_name == 'pull_request'
-
-      - run: brew test dify
-
-#      - name: Upload bottles as artifact
-#        if: always() && github.event_name == 'pull_request'
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: bottles_${{ matrix.os }}
-#          path: '*.bottle.*'

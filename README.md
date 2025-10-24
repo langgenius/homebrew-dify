@@ -27,6 +27,6 @@ brew reinstall -f dify
 ## Uninstall
 
 ```bash
-brew reinstall -f dify
+brew unisntall dify
 brew untap langgenius/dify
 ```

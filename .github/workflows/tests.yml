@@ -13,17 +13,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  comment:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Comment on PR
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            Thank you for submitting this PR! 🚀  
-            Our CI/CD is running checks. Stay tuned for updates.
   test-bot:
     strategy:
       matrix:

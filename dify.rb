@@ -37,7 +37,7 @@ class Dify < Formula
     "dify-plugin-linux-arm64"  => "ebdad4fe3555f597dd1e717021bd7b1c9b745deb2f391f31eef707d6249b5f6e",
   }.freeze
 
-  url "#{homepage}/releases/download/#{version}/#{CLI_BIN_NAME}"
+  url "#{homepage}/releases/download/0.4.0/#{CLI_BIN_NAME}"
   version "0.4.0"
   sha256 get_sha256(CLI_BIN_NAME)
 

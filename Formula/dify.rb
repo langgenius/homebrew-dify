@@ -31,14 +31,14 @@ class Dify < Formula
   end
 
   CHECKSUM_MAP = {
-    "dify-plugin-darwin-amd64" => "55ec70958cb313e9026c8969f35c5de4c50e044102816f84450de5edeae70d0a",
-    "dify-plugin-darwin-arm64" => "95dd55c2e949eaf716a5574121f6d86c80afbf1abbc552e8d4ddceb5a0f8028b",
+    "dify-plugin-darwin-amd64" => "30c0c3f4e7d7fb416c825d68ec1a084a3ac55f3bcd482d6a61817df64092bd6c",
+    "dify-plugin-darwin-arm64" => "c370b2819249f2ea7a663ddaaa046ee52a56c725b98470d23410eef271627ebb",
     "dify-plugin-linux-amd64"  => "f26e5e5faae3d3931979798932aa6542c71de827b470132f385a95e0d74c5dcf",
     "dify-plugin-linux-arm64"  => "078149cf70cd3f1fdee11b733c1f1e49e594628f69c22a60a1ca0abeabe3569d",
   }.freeze
 
-  url "#{homepage}/releases/download/0.3.2/#{CLI_BIN_NAME}"
-  version "0.3.2"
+  url "#{homepage}/releases/download/0.4.1/#{CLI_BIN_NAME}"
+  version "0.4.1"
   sha256 get_sha256(CLI_BIN_NAME)
 
   livecheck do

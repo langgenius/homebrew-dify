@@ -33,8 +33,8 @@ class Dify < Formula
   CHECKSUM_MAP = {
     "dify-plugin-darwin-amd64" => "30c0c3f4e7d7fb416c825d68ec1a084a3ac55f3bcd482d6a61817df64092bd6c",
     "dify-plugin-darwin-arm64" => "c370b2819249f2ea7a663ddaaa046ee52a56c725b98470d23410eef271627ebb",
-    "dify-plugin-linux-amd64"  => "f26e5e5faae3d3931979798932aa6542c71de827b470132f385a95e0d74c5dcf",
-    "dify-plugin-linux-arm64"  => "078149cf70cd3f1fdee11b733c1f1e49e594628f69c22a60a1ca0abeabe3569d",
+    "dify-plugin-linux-amd64"  => "5d0e6684ad460c45e8e28b4a84b316c586c3a0fe2edbe1cd5b25a16d8494940b",
+    "dify-plugin-linux-arm64"  => "f4c276b6d19cfa32a93576fc0063503d14b4b5871df16d4d50cbdba9d046ee34",
   }.freeze
 
   url "#{homepage}/releases/download/0.4.1/#{CLI_BIN_NAME}"

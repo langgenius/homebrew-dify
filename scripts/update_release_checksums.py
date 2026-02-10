@@ -48,7 +48,7 @@ def run_main():
             print(f"Failed to get asset {asset_id}: {e}")
 
     # Read dify.rb file
-    dify_rb_path = (Path(__file__).resolve().parent.parent / "dify.rb")
+    dify_rb_path = (Path(__file__).resolve().parent.parent / "Formula" / "dify.rb")
     file_txt = dify_rb_path.read_text(encoding="utf-8")
 
     # Replace checksums in dify.rb file
@@ -58,7 +58,7 @@ def run_main():
         "dify-plugin-linux-arm64",
         "dify-plugin-linux-amd64",
     ]:
-        pattern = rf'("{asset_name}" => ")[^"]+"'
+        pattern = rf'("{asset_name}"\s*=>\s*")[^"]+"'
         replacement = rf'\g<1>{asset_map.get(asset_name)}"'
         file_txt = re.sub(pattern, replacement, file_txt)
 

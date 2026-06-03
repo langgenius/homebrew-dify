@@ -31,14 +31,14 @@ class Dify < Formula
   end
 
   CHECKSUM_MAP = {
-    "dify-plugin-darwin-amd64" => "b786ccdf69ddeda354e5c0900024dca9f21cde1a0944163f3c39169c2a47aff3",
-    "dify-plugin-darwin-arm64" => "f337a9e54e2c253eedbbada7761b95322b9ab207abec87c62816d0490aec0f6c",
-    "dify-plugin-linux-amd64"  => "b9e2440e2cc780683c3ee182e58267472bd40d9db8715893e19206d15e720352",
-    "dify-plugin-linux-arm64"  => "141c2b1ef70d9bee11320bebae834a8b3a80fee1917bfdb7018164248bf7b106",
+    "dify-plugin-darwin-amd64" => "a401c38848ff064ca17cfe449df298f112f6ea62f9c142f300a64cb7e0b12f5a",
+    "dify-plugin-darwin-arm64" => "8664808903661a6d03db8792163301f9046e30aec8399056c757c00bdbef3aed",
+    "dify-plugin-linux-amd64"  => "a8495a4392e377737e7166e1f7afb0b40bc8cc5fa4d44eaa65c08e60c679d7d5",
+    "dify-plugin-linux-arm64"  => "9c3f9a24cca0498cca95994807f17661bb3b73562fb2114662f4661935978ec4",
   }.freeze
 
-  url "#{homepage}/releases/download/0.6.0/#{CLI_BIN_NAME}"
-  version "0.6.0"
+  url "#{homepage}/releases/download/0.6.1/#{CLI_BIN_NAME}"
+  version "0.6.1"
   sha256 get_sha256(CLI_BIN_NAME)
 
   livecheck do

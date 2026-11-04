@@ -1,75 +1,83 @@
 import json
 import os
 import re
+import sys
 import urllib.request
 from pathlib import Path
 
 
-def run_main():
-    access_token = os.getenv("GITHUB_TOKEN")
-    if not access_token:
-        raise ValueError("empty GITHUB_TOKEN, please set it in the environment variable.")
+FORMULA_PATH = Path(__file__).resolve().parent.parent / "Formula" / "dify.rb"
+RELEASE_URL = "https://api.github.com/repos/langgenius/dify-plugin-daemon/releases/latest"
+ASSET_NAMES = (
+    "dify-plugin-darwin-amd64",
+    "dify-plugin-darwin-arm64",
+    "dify-plugin-linux-amd64",
+    "dify-plugin-linux-arm64",
+)
 
-    headers = {
-        "Accept": "application/vnd.github+json",
-        "Authorization": f"Bearer {access_token}",
-    }
 
-    def urlopen_with_headers(url, headers, timeout=10) -> bytes:
-        req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return resp.read()
+def update_formula(content, release):
+    """Validate the release and return a complete formula update."""
+    if not isinstance(release, dict):
+        raise ValueError("Expected a release object from GitHub")
+    tag = release.get("tag_name")
+    if not isinstance(tag, str) or not re.fullmatch(r"v?\d+\.\d+\.\d+", tag):
+        raise ValueError(f"Invalid stable release tag: {tag!r}")
+    version = tag.removeprefix("v")
 
-    # Get the latest release information
-    latest_release = {}
-    try:
-        resp_bytes = urlopen_with_headers(
-            "https://api.github.com/repos/langgenius/dify-plugin-daemon/releases/latest",
-            headers=headers,
-            timeout=10
+    assets = release.get("assets")
+    if not isinstance(assets, list) or not all(isinstance(a, dict) for a in assets):
+        raise ValueError("Missing or invalid release assets")
+    checksums = {}
+    for name in ASSET_NAMES:
+        matches = [asset for asset in assets if asset.get("name") == name]
+        if len(matches) != 1:
+            raise ValueError(f"Expected exactly one release asset: {name}")
+        digest = matches[0].get("digest")
+        if not isinstance(digest, str) or not re.fullmatch(r"sha256:[0-9a-f]{64}", digest):
+            raise ValueError(f"Missing or invalid SHA256 digest for {name}")
+        checksums[name] = digest.removeprefix("sha256:")
+
+    def replace_once(pattern, replacement, field):
+        nonlocal content
+        content, count = re.subn(pattern, replacement, content, flags=re.MULTILINE)
+        if count != 1:
+            raise ValueError(f"Expected exactly one {field} in {FORMULA_PATH.name}")
+
+    for name, checksum in checksums.items():
+        replace_once(
+            rf'("{re.escape(name)}"\s*=>\s*")[^"]*(")',
+            rf'\g<1>{checksum}\g<2>',
+            f"checksum for {name}",
         )
-        latest_release = json.loads(resp_bytes.decode("utf-8"))
-        assets = latest_release.get("assets", [])
-    except Exception as e:
-        print(f"Failed to get latest release: {e}")
-        return
+    replace_once(
+        r'^  url "#\{homepage\}/releases/download/[^/"]+/#\{CLI_BIN_NAME\}"$',
+        f'  url "#{{homepage}}/releases/download/{tag}/#{{CLI_BIN_NAME}}"',
+        "release URL",
+    )
+    replace_once(r'^  version "[^"]+"$', f'  version "{version}"', "version")
+    return content
 
-    # Extract checksums of asset files
-    asset_map = {}
-    for asset in assets:
-        asset_id = asset.get("id")
-        asset_url = f"https://api.github.com/repos/langgenius/dify-plugin-daemon/releases/assets/{asset_id}"
-        try:
-            data = json.loads(urlopen_with_headers(asset_url, headers=headers, timeout=10).decode("utf-8"))
-            checksum_sha256 = data.get("digest").removeprefix("sha256:")
-            name = data.get("name")
-            asset_map[name] = checksum_sha256
-        except Exception as e:
-            print(f"Failed to get asset {asset_id}: {e}")
 
-    # Read dify.rb file
-    dify_rb_path = (Path(__file__).resolve().parent.parent / "Formula" / "dify.rb")
-    file_txt = dify_rb_path.read_text(encoding="utf-8")
+def run_main():
+    headers = {"Accept": "application/vnd.github+json"}
+    access_token = os.getenv("GITHUB_TOKEN")
+    if access_token:
+        headers["Authorization"] = f"Bearer {access_token}"
 
-    # Replace checksums in dify.rb file
-    for asset_name in [
-        "dify-plugin-darwin-arm64",
-        "dify-plugin-darwin-amd64",
-        "dify-plugin-linux-arm64",
-        "dify-plugin-linux-amd64",
-    ]:
-        pattern = rf'("{asset_name}"\s*=>\s*")[^"]+"'
-        replacement = rf'\g<1>{asset_map.get(asset_name)}"'
-        file_txt = re.sub(pattern, replacement, file_txt)
+    try:
+        request = urllib.request.Request(RELEASE_URL, headers=headers)
+        with urllib.request.urlopen(request, timeout=30) as response:
+            release = json.load(response)
+        content = update_formula(FORMULA_PATH.read_text(encoding="utf-8"), release)
+        FORMULA_PATH.write_text(content, encoding="utf-8")
+    except (OSError, ValueError) as error:
+        print(f"Failed to update formula: {error}", file=sys.stderr)
+        return 1
 
-    # update the version in dify.rb file
-    version_pattern = r'  (version) \"[.\d]+\"'
-    version_replacement = rf'  \g<1> "{latest_release.get("name")}"'
-    file_txt = re.sub(version_pattern, version_replacement, file_txt)
-
-    # Write the updated content back to dify.rb
-    dify_rb_path.write_text(file_txt, encoding="utf-8")
+    print(f"Updated {FORMULA_PATH.name} to {release['tag_name']}")
+    return 0
 
 
 if __name__ == "__main__":
-    run_main()
+    sys.exit(run_main())

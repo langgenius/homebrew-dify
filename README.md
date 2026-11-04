@@ -56,17 +56,37 @@ The formula lives in [`Formula/dify.rb`](Formula/dify.rb). It pins a `version`
 and the SHA256 checksum for each platform binary published in a
 [`dify-plugin-daemon` release](https://github.com/langgenius/dify-plugin-daemon/releases).
 
-To bump the formula to the latest upstream release, run the helper script — it
-reads the latest release from the GitHub API and rewrites the version and
-checksums in `Formula/dify.rb`:
+To bump the formula to the latest stable upstream release, run the helper script
+with Python 3.9 or newer from the repository root. It reads the release tag and
+asset digests from the GitHub API and updates the download URL, version, and all
+four platform checksums in `Formula/dify.rb`:
 
 ```bash
-export GITHUB_TOKEN=<your-token>
-python scripts/update_release_checksums.py
+python3 scripts/update_release_checksums.py
 ```
 
-Pull requests are validated by [`brew test-bot`](.github/workflows/tests.yml),
-which runs the Homebrew tap-syntax and formula checks on macOS and Ubuntu.
+Authentication is optional for this public repository. Set `GITHUB_TOKEN` in
+your environment if you need an authenticated API request, for example to avoid
+the unauthenticated rate limit. The script exits with an error without changing
+the formula if the API request fails, a required asset or SHA256 digest is
+missing or invalid, or the expected formula fields cannot be found uniquely.
+
+Review the diff and run the local checks before opening a pull request:
+
+```bash
+git diff -- Formula/dify.rb
+python3 -m unittest discover -s tests -v
+ruby -c Formula/dify.rb
+git diff --check
+```
+
+Also verify downloaded release binaries against the updated SHA256 checksums
+and confirm that the native binary's `version` command reports the expected
+`v<version>`.
+
+The [`brew test-bot` workflow](.github/workflows/tests.yml) defines Homebrew
+tap-syntax and formula checks for macOS and Ubuntu, but its job is currently
+disabled with `if: false`. Pull requests do not run those checks automatically.
 
 ## License
 
